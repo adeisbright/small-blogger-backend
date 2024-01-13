@@ -1,18 +1,29 @@
 import { Injectable } from "@nestjs/common";
+import { MongoDataServices } from "src/datasource/mongodb.service";
+import { Post } from "src/datasource/mongodb/schemas/post.entity";
+import { ErrorService } from "src/shared/errors/errors.service";
 @Injectable()
 export class BlogService {
-    private posts : Record<string,any> = [
-        // {
-        //     id : 1,
-        //     title : "Hello",
-        //     content : "World"
-        // }
-    ]
+    constructor(
+        private readonly errorService : ErrorService , 
+        private readonly mongoDataServices : MongoDataServices
+    ){}
+    
+    async addPost(postData : Partial<Post>){
+        try{
+            const post = await this.mongoDataServices.posts.add(postData)
+            return post
+        }catch(e){
+            return this.errorService.serviceError(e)
+        }
+    }
+
     async getPosts(){
         try{
-            return this.posts 
+            const posts = await this.mongoDataServices.posts.getAll()
+            return posts
         }catch(e){
-            return e
+            return this.errorService.serviceError(e)
         }
     }
 }

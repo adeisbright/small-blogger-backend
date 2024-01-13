@@ -1,10 +1,16 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Blog, BlogSchema } from 'src/datasource/mongodb/schemas/blog.entity';
+import { MongoDataServices, NoSqlServices } from 'src/datasource/mongodb.service';
+import { Post, PostSchema} from 'src/datasource/mongodb/schemas/post.entity';
 import { User, UserSchema } from 'src/datasource/mongodb/schemas/user.entity';
 
 @Module({
-    providers : [],
+    providers : [
+        {
+            provide : MongoDataServices , 
+            useClass : NoSqlServices
+        }
+    ],
     imports :[
         MongooseModule.forFeature([
             {
@@ -12,8 +18,8 @@ import { User, UserSchema } from 'src/datasource/mongodb/schemas/user.entity';
                 schema : UserSchema
             },
             {
-                name : Blog.name , 
-                schema : BlogSchema
+                name : Post.name , 
+                schema : PostSchema
             }
         ] , "blogger")
     ]
