@@ -3,7 +3,7 @@ import { MongoDataServices } from "src/datasource/mongodb.service";
 import { Post } from "src/datasource/mongodb/schemas/post.entity";
 import { ErrorService } from "src/shared/errors/errors.service";
 @Injectable()
-export class BlogService {
+export class PostService {
     constructor(
         private readonly errorService : ErrorService , 
         private readonly mongoDataServices : MongoDataServices
@@ -13,7 +13,7 @@ export class BlogService {
         try{
             const post = await this.mongoDataServices.posts.add(postData)
             return post
-        }catch(e){
+        }catch(e:any){
             return this.errorService.serviceError(e)
         }
     }
@@ -22,7 +22,7 @@ export class BlogService {
         try{
             const posts = await this.mongoDataServices.posts.getAll()
             return posts
-        }catch(e){
+        }catch(e:any){
             return this.errorService.serviceError(e)
         }
     }
