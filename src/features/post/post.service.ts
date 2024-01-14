@@ -20,8 +20,17 @@ export class PostService {
 
     async getPosts(){
         try{
-            const posts = await this.mongoDataServices.posts.getAll()
+            const posts = await this.mongoDataServices.posts.getAll({} , [])
             return posts
+        }catch(e:any){
+            return this.errorService.serviceError(e)
+        }
+    }
+
+    async deletePost(_id : string) : Promise<boolean>{
+        try{
+            const posts = await this.mongoDataServices.posts.deleteOne({_id})
+            return true
         }catch(e:any){
             return this.errorService.serviceError(e)
         }
