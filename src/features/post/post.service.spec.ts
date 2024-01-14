@@ -1,31 +1,31 @@
 import { TestingModule , Test } from "@nestjs/testing"; 
-import { BlogService } from "./blog.service";
+import {PostService } from "./post.service";
 
 describe("Blog Service" , () => {
-    let blogService : BlogService
+    let postService : PostService
     beforeEach(async () => {
         const module : TestingModule = await Test.createTestingModule({
             providers : [
-                BlogService
+                PostService
             ]
         }).compile()
 
-        blogService = module.get<BlogService>(BlogService)
+        postService = module.get<PostService>(PostService)
     })  
     describe("Get Posts" , () => {
         it("Should return empty posts" , async () => {
             const expectedResults : Record<string,any>= []
-            jest.spyOn(blogService , "getPosts").mockResolvedValue(expectedResults)
-            const posts = await blogService.getPosts()
+            jest.spyOn(postService , "getPosts").mockResolvedValue(expectedResults)
+            const posts = await postService.getPosts()
             expect(posts).toEqual(expectedResults)
         })
 
         it("Should throw error when error occurs" , async () => {
            
-            jest.spyOn(blogService , "getPosts").mockRejectedValue(new Error("Error Occured"))
+            jest.spyOn(postService , "getPosts").mockRejectedValue(new Error("Error Occured"))
             let errorResult : any ;
             try{
-                await blogService.getPosts()
+                await postService.getPosts()
             }catch(e){
                 errorResult = e
             }

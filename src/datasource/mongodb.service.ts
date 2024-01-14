@@ -1,24 +1,53 @@
-import { Model } from "mongoose"
+import { Model, UpdateQuery, _FilterQuery } from "mongoose"
 import { Post, PostDocument } from "./mongodb/schemas/post.entity"
 import { User, UserDocument } from "./mongodb/schemas/user.entity"
 import { Injectable, OnApplicationBootstrap } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 
 abstract class IGenericRepository<T> {
-    abstract add(data : Partial<T>) : Promise<T>
-    abstract getAll() : Promise<T[]>
+    abstract add(data : Partial<T>) : Promise<T> ; 
+    abstract getAll(
+        param : _FilterQuery<T> , 
+        projection : string | string[] , 
+        populate ?: string | string[] , 
+        limit ?: number ,
+        skip ?: number , 
+        sortField ?: string ) : Promise<T[]> ; 
+    abstract deleteOne(param : _FilterQuery<T>) : Promise<any> ; 
+    abstract updateOne(param : _FilterQuery<T> , data : UpdateQuery<T>) : Promise<T> ; 
 }
 
 class MongoGenericRepository<T> implements IGenericRepository<T> {
     private readonly model : Model<T>
+    private populateField : string[] = []
     constructor(model : Model<T>){
         this.model = model
     }
     add(data : Partial<T>) : Promise<T> {
         return this.model.create(data)
     }
-    getAll() : Promise<T[]> {
-        return this.model.find()
+    getAll(
+        param : _FilterQuery<T> , 
+        projection : string | string[] , 
+        populate ?: string | string[] , 
+        limit ?: number ,
+        skip ?: number , 
+        sortField ?: string 
+    ) : Promise<T[]> {
+        return this.model.
+        find(param)
+        .populate(populate ? populate : this.populateField)
+        .select(projection)
+        .limit(limit || 10)
+        .skip(skip || 0)
+        .sort("_id" || sortField)
+        .exec()
+    }
+    deleteOne(param : _FilterQuery<T>) : Promise<any> {
+        return this.model.findOneAndDelete(param).exec()
+    }
+    updateOne(param : _FilterQuery<T> , data : UpdateQuery<T>) : Promise<T | any> {
+        return this.model.findOneAndUpdate(param , data)
     }
 }
 

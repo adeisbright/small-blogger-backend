@@ -6,7 +6,9 @@ export type PostDocument = HydratedDocument<Post>
 @Schema({timestamps : true}) 
 export class Post extends Document {
     @Prop()
-    title : string
+    title : string 
+    @Prop() 
+    content : string 
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post)
