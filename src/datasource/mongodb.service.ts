@@ -13,6 +13,11 @@ abstract class IGenericRepository<T> {
         limit ?: number ,
         skip ?: number , 
         sortField ?: string ) : Promise<T[]> ; 
+    abstract getOne(
+        param : _FilterQuery<T> , 
+        projection : string | string[] , 
+        populate ?: string | string[] 
+    ) : Promise<T | unknown> ;
     abstract deleteOne(param : _FilterQuery<T>) : Promise<any> ; 
     abstract updateOne(param : _FilterQuery<T> , data : UpdateQuery<T>) : Promise<T> ; 
 }
@@ -41,6 +46,17 @@ class MongoGenericRepository<T> implements IGenericRepository<T> {
         .limit(limit || 10)
         .skip(skip || 0)
         .sort("_id" || sortField)
+        .exec()
+    }
+    getOne(
+        param : _FilterQuery<T> , 
+        projection : string | string[] , 
+        populate ?: string | string[] , 
+    ) : Promise<T | unknown> {
+        return this.model.
+        findOne(param)
+        .populate(populate ? populate : this.populateField)
+        .select(projection)
         .exec()
     }
     deleteOne(param : _FilterQuery<T>) : Promise<any> {

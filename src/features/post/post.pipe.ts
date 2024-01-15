@@ -6,11 +6,13 @@ const postSchema = z.object({
     title : z.string({
         required_error: "title is required",
         invalid_type_error: "title must be a string",
-    })
+    }),
+    content : z.string()
 })
 export class AddPostPipe implements PipeTransform{
     transform(value: PostDTO, metadata: ArgumentMetadata)  : PostDTO{
         try{
+            console.log(value)
             const result = postSchema.parse(value)
             return value as PostDTO
         }catch(error){

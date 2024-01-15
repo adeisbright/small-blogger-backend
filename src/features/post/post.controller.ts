@@ -27,6 +27,7 @@ export class PostController{
         @Res() res : Response , 
         @Body() postData : any
     ){
+        console.log(postData)
         const post = await this.postService.addPost(postData) 
         return res.status(HttpStatus.OK).json({
             message : "Post Added",
@@ -53,11 +54,24 @@ export class PostController{
     async removePost(
         @Req() req : Request , 
         @Res() res : Response , 
-        @Param() id : string
+        @Param("id") id : string
     ){
         await this.postService.deletePost(id)
         return res.status(HttpStatus.OK).json({
             message : "Post Removed"
+        })
+    }
+
+    @Get("/:id") 
+    async getPost(
+        @Req() req : Request , 
+        @Res() res : Response , 
+        @Param("id") id : string
+    ){
+        const post = await this.postService.getPost(id)
+        return res.status(HttpStatus.OK).json({
+            message : "Post Retrieved",
+            post
         })
     }
 }
