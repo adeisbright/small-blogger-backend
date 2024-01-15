@@ -18,6 +18,15 @@ export class PostService {
         }
     }
 
+    async updatePost(_id : string , postData : Partial<Post>){
+        try{
+            const post = await this.mongoDataServices.posts.updateOne({_id} , postData)
+            return post
+        }catch(e:any){
+            return this.errorService.serviceError(e)
+        }
+    }
+
     async getPosts(){
         try{
             const posts = await this.mongoDataServices.posts.getAll({} , [])
