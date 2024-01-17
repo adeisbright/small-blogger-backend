@@ -25,6 +25,7 @@ export class UserService {
 
     async checkForDuplicate(body: UserDTO): Promise<User> {
         try {
+          console.log(body)
           const { email, username } = body;
           body.email = email.toLowerCase();
           

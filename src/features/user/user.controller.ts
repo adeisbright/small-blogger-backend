@@ -1,7 +1,8 @@
-import { Controller, Req, Res , Body, HttpStatus } from "@nestjs/common";
+import { Controller, Req, Res , Body, HttpStatus , Post, UseFilters } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { Request , Response } from "express";
 import { UserDTO } from "./user.dto";
+import { AddUserPipe } from "./user.pipe";
 
 @Controller("users")
 export class UserController {
@@ -9,6 +10,8 @@ export class UserController {
         private  readonly userService : UserService
     ){}
 
+    @Post()
+    @UseFilters(AddUserPipe)
     async addUser(
         @Req() req  :Request , 
         @Res() res : Response , 
