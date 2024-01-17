@@ -27,7 +27,6 @@ export class PostController{
         @Res() res : Response , 
         @Body() postData : any
     ){
-        console.log(postData)
         const post = await this.postService.addPost(postData) 
         return res.status(HttpStatus.OK).json({
             message : "Post Added",

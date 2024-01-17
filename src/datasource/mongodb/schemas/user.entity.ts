@@ -9,6 +9,9 @@ export class User extends Document {
 
     @Prop()
     password : string
+
+    @Prop({unique : true})
+    username : string
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)

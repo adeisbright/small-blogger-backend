@@ -6,10 +6,13 @@ import { User, UserSchema } from 'src/datasource/mongodb/schemas/user.entity';
 import { PostService } from './post/post.service';
 import { ErrorService } from 'src/shared/errors/errors.service';
 import { PostController } from './post/post.controller';
+import { UserController } from './user/user.controller';
+import { UserService } from './user/user.service';
 
 @Module({
     controllers : [
-        PostController
+        PostController,
+        UserController
     ],
     providers : [
         {
@@ -17,6 +20,7 @@ import { PostController } from './post/post.controller';
             useClass : NoSqlServices
         } , 
         PostService , 
+        UserService,
         ErrorService
     ],
     imports :[
