@@ -16,8 +16,9 @@ export class UserService {
             //Check if the user is unique 
             const { password } = userData;
             await this.checkForDuplicate(userData);
+            const user = await this.mongoService.users.add(userData)
             // Add the user 
-            return "User successful"
+            return user
         }catch(e){
             return this.errorService.serviceError(e)
         }
@@ -25,7 +26,6 @@ export class UserService {
 
     async checkForDuplicate(body: UserDTO): Promise<User> {
         try {
-          console.log(body)
           const { email, username } = body;
           body.email = email.toLowerCase();
           
