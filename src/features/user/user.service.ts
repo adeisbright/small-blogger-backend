@@ -11,13 +11,10 @@ export class UserService {
         private readonly mongoService : MongoDataServices
     ){}
 
-    async addUser(userData : UserDTO){
+    async addUser(userData : UserDTO) : Promise<User>{
         try{
-            //Check if the user is unique 
-            const { password } = userData;
             await this.checkForDuplicate(userData);
             const user = await this.mongoService.users.add(userData)
-            // Add the user 
             return user
         }catch(e){
             return this.errorService.serviceError(e)
