@@ -1,17 +1,23 @@
 import { ArgumentMetadata, BadRequestException, PipeTransform } from "@nestjs/common";
 import {z} from "zod"
 import { UserDTO } from "./user.dto";
+import { validationMessages } from "src/shared/utils/validation-messages";
 
 const userSchema = z.object({
     email : z.string({
-        required_error: "email is required",
-        invalid_type_error: "email must be a string",
+        required_error: validationMessages("email").required ,
+        invalid_type_error: validationMessages("email").invalidType,
     }),
-    username : z.string() , 
-    password : z.string(),
+    username : z.string({
+        required_error: validationMessages("username").required ,
+        invalid_type_error: validationMessages("username").invalidType,
+    }),
+    password : z.string({
+        required_error: validationMessages("password").required 
+    }),
 })
 export class AddUserPipe implements PipeTransform{
-    transform(value: UserDTO, _: ArgumentMetadata)  : UserDTO{
+    transform(value: UserDTO, metadata: ArgumentMetadata)  : UserDTO{
         try{
             const result = userSchema.parse(value)
             return value as UserDTO

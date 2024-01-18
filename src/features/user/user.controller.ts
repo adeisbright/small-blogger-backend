@@ -1,4 +1,4 @@
-import { Controller, Req, Res , Body, HttpStatus , Post, UseFilters } from "@nestjs/common";
+import { Controller, Req, Res , Body, HttpStatus , Post, UsePipes } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { Request , Response } from "express";
 import { UserDTO } from "./user.dto";
@@ -11,7 +11,7 @@ export class UserController {
     ){}
 
     @Post()
-    @UseFilters(AddUserPipe)
+    @UsePipes(AddUserPipe)
     async addUser(
         @Req() req  :Request , 
         @Res() res : Response , 
