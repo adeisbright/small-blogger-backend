@@ -8,6 +8,7 @@ import { ErrorService } from 'src/shared/errors/errors.service';
 import { PostController } from './post/post.controller';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
+import { SuccessResponse } from 'src/shared/response/succes-response';
 
 @Module({
     controllers : [
@@ -21,7 +22,8 @@ import { UserService } from './user/user.service';
         } , 
         PostService , 
         UserService,
-        ErrorService
+        ErrorService,
+        SuccessResponse
     ],
     imports :[
         MongooseModule.forFeature([
