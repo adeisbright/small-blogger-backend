@@ -7,11 +7,8 @@ import { config } from './config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      config.database.uri , 
-      config.database.connectionName
-    ),
-    FeaturesModule , 
+    MongooseModule.forRoot(config.database.uri, config.database.connectionName),
+    FeaturesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

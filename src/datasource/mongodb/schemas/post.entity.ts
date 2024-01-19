@@ -1,14 +1,14 @@
-import { Schema, SchemaFactory , Prop } from "@nestjs/mongoose";
-import { Document , HydratedDocument } from "mongoose";
+import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
+import { Document, HydratedDocument } from 'mongoose';
 
-export type PostDocument = HydratedDocument<Post>
+export type PostDocument = HydratedDocument<Post>;
 
-@Schema({timestamps : true}) 
+@Schema({ timestamps: true })
 export class Post extends Document {
-    @Prop()
-    title : string 
-    @Prop() 
-    content : string 
+  @Prop()
+  title: string;
+  @Prop()
+  content: string;
 }
 
-export const PostSchema = SchemaFactory.createForClass(Post)
+export const PostSchema = SchemaFactory.createForClass(Post);
