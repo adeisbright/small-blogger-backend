@@ -1,5 +1,5 @@
 export interface ObjectLiteral {
-    [key: string]: any;
+  [key: string]: any;
 }
 
 export interface IResponseInterface {

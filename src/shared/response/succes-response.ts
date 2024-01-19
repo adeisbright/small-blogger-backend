@@ -5,9 +5,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class SuccessResponse {
-  constructor(
-    private readonly errorService: ErrorService,
-  ) {}
+  constructor(private readonly errorService: ErrorService) {}
 
   async ok(
     res: Response,
