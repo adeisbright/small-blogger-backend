@@ -13,6 +13,8 @@ import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { SuccessResponse } from 'src/shared/response/succes-response';
 import { JwtModule } from '@nestjs/jwt';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './user/auth.guard';
 
 @Module({
   controllers: [PostController, UserController],
@@ -25,6 +27,10 @@ import { JwtModule } from '@nestjs/jwt';
     UserService,
     ErrorService,
     SuccessResponse,
+    {
+        provide : APP_GUARD,
+        useClass : AuthGuard
+    }
   ],
   imports: [
     MongooseModule.forFeature(
