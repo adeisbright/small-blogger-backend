@@ -14,10 +14,13 @@ import {
 import { PostService } from './post.service';
 import { Request, Response } from 'express';
 import { AddPostPipe } from './post.pipe';
+import { PUBLIC } from '../user/public-route-decorator';
 
 @Controller('posts')
 export class PostController {
   constructor(private postService: PostService) {}
+
+  @PUBLIC()
   @Get()
   async getPosts(@Req() req: Request, @Res() res: Response) {
     const posts = await this.postService.getPosts();
