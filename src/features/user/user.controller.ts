@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { UserDTO } from './user.dto';
 import { AddUserPipe, LoginPipe } from './user.pipe';
 import { SuccessResponse } from 'src/shared/response/succes-response';
+import { PUBLIC } from './public-route-decorator';
 
 @Controller()
 export class UserController {
@@ -12,6 +13,7 @@ export class UserController {
     private readonly successResponse: SuccessResponse,
   ) {}
 
+  @PUBLIC()
   @Post('/registration')
   @UsePipes(AddUserPipe)
   async addUser(
@@ -23,6 +25,7 @@ export class UserController {
     return this.successResponse.ok(res, req, { data: user });
   }
 
+  @PUBLIC()
   @Post('/login')
   @UsePipes(LoginPipe)
   async handleLogin(
