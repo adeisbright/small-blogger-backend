@@ -28,9 +28,9 @@ import { AuthGuard } from './user/auth.guard';
     ErrorService,
     SuccessResponse,
     {
-        provide : APP_GUARD,
-        useClass : AuthGuard
-    }
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
   ],
   imports: [
     MongooseModule.forFeature(
