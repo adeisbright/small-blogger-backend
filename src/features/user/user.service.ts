@@ -10,14 +10,20 @@ import { ErrorService } from 'src/shared/errors/errors.service';
 import { UserDTO } from './user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { config } from 'src/config';
 
 @Injectable()
 export class UserService {
+  private secret: string;
+  private appName: string;
   constructor(
     private readonly errorService: ErrorService,
     private readonly mongoService: MongoDataServices,
     private readonly jwtService: JwtService,
-  ) {}
+  ) {
+    this.secret = config.jwtSecret;
+    this.appName = config.appName;
+  }
 
   async addUser(userData: UserDTO): Promise<User> {
     try {
@@ -93,13 +99,13 @@ export class UserService {
         email,
         username,
         id,
-        audience: 'adebaba',
-        issuer: 'babaade',
+        audience: email,
+        issuer: this.appName,
         subject: id,
         sub: email,
       };
       const token = await this.jwtService.signAsync(payload, {
-        secret: 'bababa',
+        secret: this.secret,
         expiresIn: 60 * 60 * 10,
       });
       return token;
