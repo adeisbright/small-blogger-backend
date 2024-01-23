@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpStatus,
   Post,
   Req,
   Res,
@@ -15,19 +14,20 @@ import { PostService } from './post.service';
 import { Request, Response } from 'express';
 import { AddPostPipe } from './post.pipe';
 import { PUBLIC } from '../user/public-route-decorator';
+import { SuccessResponse } from 'src/shared/response/succes-response';
 
 @Controller('posts')
 export class PostController {
-  constructor(private postService: PostService) {}
+  constructor(
+    private postService: PostService,
+    private readonly successResponse: SuccessResponse,
+  ) {}
 
   @PUBLIC()
   @Get()
   async getPosts(@Req() req: Request, @Res() res: Response) {
     const posts = await this.postService.getPosts();
-    return res.status(HttpStatus.OK).json({
-      message: 'Posts retrieved',
-      posts,
-    });
+    return this.successResponse.ok(res, req, { data: posts });
   }
 
   @Post()
@@ -38,10 +38,7 @@ export class PostController {
     @Body() postData: any,
   ) {
     const post = await this.postService.addPost(postData);
-    return res.status(HttpStatus.OK).json({
-      message: 'Post Added',
-      post,
-    });
+    return this.successResponse.ok(res, req, { data: post });
   }
 
   @Put('/:id')
@@ -52,11 +49,8 @@ export class PostController {
     @Param() id: string,
     @Body() postData: any,
   ) {
-    const post = await this.postService.updatePost(id, postData);
-    return res.status(HttpStatus.OK).json({
-      message: 'Post Updated',
-      post,
-    });
+    const post = await this.postService.editPost(id, postData);
+    return this.successResponse.ok(res, req, { data: post });
   }
 
   @Delete('/:id')
@@ -66,9 +60,7 @@ export class PostController {
     @Param('id') id: string,
   ) {
     await this.postService.deletePost(id);
-    return res.status(HttpStatus.OK).json({
-      message: 'Post Removed',
-    });
+    return this.successResponse.ok(res, req, { data: 'Post was removed' });
   }
 
   @Get('/:id')
@@ -78,9 +70,6 @@ export class PostController {
     @Param('id') id: string,
   ) {
     const post = await this.postService.getPost(id);
-    return res.status(HttpStatus.OK).json({
-      message: 'Post Retrieved',
-      post,
-    });
+    return this.successResponse.ok(res, req, { data: post });
   }
 }
